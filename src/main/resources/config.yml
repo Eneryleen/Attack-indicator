@@ -1,0 +1,56 @@
+# Attack Indicator Configuration
+# Supports MiniMessage formatting: https://docs.advntr.dev/minimessage/format.html
+
+# Format of the damage indicator
+# {damage} will be replaced with the actual damage amount
+# Examples:
+#   "<#ffffff>-{damage}<#ff5555>♥" - Red heart with damage
+#   "<gradient:#ff0000:#ffff00>-{damage}</gradient>" - Red to yellow gradient
+#   "<bold><red>-{damage}</red></bold>" - Bold red text
+indicator-format: "<#ffffff>-{damage}<#ff5555>♥"
+
+# How long the indicator stays visible (in ticks, 20 ticks = 1 second)
+display-duration: 40
+
+# How fast the indicator moves upward (in blocks per tick)
+upward-speed: 0.03
+
+# Random offset settings to prevent indicators from stacking
+random-offset:
+  # Enable random offset
+  enabled: true
+  # Maximum offset on X axis (in blocks)
+  x: 0.5
+  # Maximum offset on Z axis (in blocks)
+  z: 0.5
+
+# Display mode for damage indicators
+# Available modes:
+#   ALL - Show all damage (from any source)
+#   PLAYER_ONLY - Show only damage dealt by players
+#   NO_SELF - Show all damage except self-inflicted damage
+display-mode: PLAYER_ONLY
+
+# List of worlds where indicators are disabled
+disabled-worlds:
+  - world_nether_example
+  - world_the_end_example
+
+# Entity types filter
+# If empty, indicators will show for all entities (except players)
+# Available entity types: https://jd.papermc.io/paper/1.19/org/bukkit/entity/EntityType.html
+# Examples: ZOMBIE, SKELETON, CREEPER, ENDERMAN, etc.
+# Leave empty [] to show for all entities
+entity-filter:
+  # If true, only entities in the list below will show indicators
+  # If false, all entities except those in the list will show indicators
+  whitelist-mode: false
+  # List of entity types
+  entities: []
+  # Example whitelist (only zombies and skeletons):
+  # entities:
+  #   - ZOMBIE
+  #   - SKELETON
+  # Example blacklist (all except creepers):
+  # entities:
+  #   - CREEPER

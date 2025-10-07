@@ -1,0 +1,18 @@
+name: AttackIndicator
+version: '2.0'
+main: org.eneryleen.attackIndicator.AttackIndicator
+api-version: '1.19'
+authors: [ Eneryleen ]
+description: Animated damage indicators using Display Entities
+website: https://projectwinter.ru
+
+commands:
+  attackindicator:
+    description: AttackIndicator main command
+    usage: /attackindicator <reload>
+    aliases: [ ai ]
+
+permissions:
+  attackindicator.reload:
+    description: Allows reloading the plugin configuration
+    default: op
