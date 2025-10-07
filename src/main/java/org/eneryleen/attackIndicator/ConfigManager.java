@@ -12,11 +12,13 @@ public class ConfigManager {
     private final AttackIndicator plugin;
     private FileConfiguration config;
 
+    private String language;
     private String indicatorFormat;
     private int displayDuration;
     private double upwardSpeed;
     private boolean randomOffsetEnabled;
     private double randomOffsetX;
+    private double yOffset;
     private double randomOffsetZ;
     private DisplayMode displayMode;
     private Set<String> disabledWorlds;
@@ -32,12 +34,14 @@ public class ConfigManager {
         plugin.reloadConfig();
         config = plugin.getConfig();
 
+        language = config.getString("language", "en");
         indicatorFormat = config.getString("indicator-format", "<#ff5555>❤️ -{damage}");
         displayDuration = config.getInt("display-duration", 40);
         upwardSpeed = config.getDouble("upward-speed", 0.03);
 
         randomOffsetEnabled = config.getBoolean("random-offset.enabled", true);
         randomOffsetX = config.getDouble("random-offset.x", 0.5);
+        yOffset = config.getDouble("random-offset.y", 0.5);
         randomOffsetZ = config.getDouble("random-offset.z", 0.5);
 
         String mode = config.getString("display-mode", "PLAYER_ONLY");
@@ -63,6 +67,10 @@ public class ConfigManager {
         }
     }
 
+    public String getLanguage() {
+        return language;
+    }
+
     public String getIndicatorFormat() {
         return indicatorFormat;
     }
@@ -81,6 +89,10 @@ public class ConfigManager {
 
     public double getRandomOffsetX() {
         return randomOffsetX;
+    }
+
+    public double getYOffset() {
+        return yOffset;
     }
 
     public double getRandomOffsetZ() {

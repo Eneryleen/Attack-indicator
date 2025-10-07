@@ -35,7 +35,7 @@ public class IndicatorManager {
         ConfigManager config = plugin.getConfigManager();
 
         Location location = entity.getLocation().clone();
-        location.add(0, entity.getHeight() + 0.5, 0);
+        location.add(0, entity.getHeight() + config.getYOffset(), 0);
 
         if (config.isRandomOffsetEnabled()) {
             double offsetX = (random.nextDouble() - 0.5) * config.getRandomOffsetX();
@@ -66,24 +66,18 @@ public class IndicatorManager {
     }
 
     private void animateIndicator(TextDisplay display, Location startLocation, double speed, int duration) {
-        new BukkitRunnable() {
-            int ticks = 0;
+        display.setInterpolationDelay(0);
+        display.setInterpolationDuration(duration);
 
-            @Override
-            public void run() {
-                if (!display.isValid() || ticks >= duration) {
-                    display.remove();
-                    activeIndicators.remove(display);
-                    cancel();
-                    return;
-                }
+        float totalDistance = (float) (speed * duration);
+        Transformation transformation = display.getTransformation();
+        transformation.getTranslation().add(0, totalDistance, 0);
+        display.setTransformation(transformation);
 
-                Location newLocation = display.getLocation().add(0, speed, 0);
-                display.teleport(newLocation);
-
-                ticks++;
-            }
-        }.runTaskTimer(plugin, 0L, 1L);
+        plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
+            display.remove();
+            activeIndicators.remove(display);
+        }, duration);
     }
 
     public void cleanup() {

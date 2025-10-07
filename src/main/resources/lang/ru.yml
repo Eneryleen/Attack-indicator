@@ -1,0 +1,6 @@
+command:
+  usage: "Использование: /attackindicator <reload>"
+  no-permission: "У вас нет прав для использования этой команды!"
+  reload-success: "Конфигурация AttackIndicator успешно перезагружена!"
+  reload-error: "Не удалось перезагрузить конфигурацию: {error}"
+  unknown-subcommand: "Неизвестная подкоманда. Использование: /attackindicator <reload>"

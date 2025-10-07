@@ -1,14 +1,14 @@
 package org.eneryleen.attackIndicator;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ReloadCommand implements CommandExecutor, TabCompleter {
 
@@ -20,22 +20,27 @@ public class ReloadCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        LangManager lang = plugin.getLangManager();
+
         if (args.length == 0) {
-            sender.sendMessage(Component.text("Usage: /attackindicator <reload>", NamedTextColor.YELLOW));
+            sender.sendMessage(lang.getComponent("command.usage"));
             return true;
         }
 
         if (args[0].equalsIgnoreCase("reload")) {
             if (!sender.hasPermission("attackindicator.reload")) {
-                sender.sendMessage(Component.text("You don't have permission to use this command!", NamedTextColor.RED));
+                sender.sendMessage(lang.getComponent("command.no-permission"));
                 return true;
             }
 
             try {
                 plugin.getConfigManager().loadConfig();
-                sender.sendMessage(Component.text("AttackIndicator configuration reloaded successfully!", NamedTextColor.GREEN));
+                plugin.getLangManager().loadLanguage(plugin.getConfigManager().getLanguage());
+                sender.sendMessage(lang.getComponent("command.reload-success"));
             } catch (Exception e) {
-                sender.sendMessage(Component.text("Failed to reload configuration: " + e.getMessage(), NamedTextColor.RED));
+                Map<String, String> placeholders = new HashMap<>();
+                placeholders.put("error", e.getMessage());
+                sender.sendMessage(lang.getComponent("command.reload-error", placeholders));
                 plugin.getLogger().severe("Failed to reload configuration: " + e.getMessage());
                 e.printStackTrace();
             }
@@ -43,7 +48,7 @@ public class ReloadCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        sender.sendMessage(Component.text("Unknown subcommand. Usage: /attackindicator <reload>", NamedTextColor.YELLOW));
+        sender.sendMessage(lang.getComponent("command.unknown-subcommand"));
         return true;
     }
 

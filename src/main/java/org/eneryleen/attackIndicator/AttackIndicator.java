@@ -7,6 +7,7 @@ public final class AttackIndicator extends JavaPlugin {
 
     private static AttackIndicator instance;
     private ConfigManager configManager;
+    private LangManager langManager;
     private IndicatorManager indicatorManager;
 
     @Override
@@ -15,6 +16,9 @@ public final class AttackIndicator extends JavaPlugin {
 
         configManager = new ConfigManager(this);
         configManager.loadConfig();
+
+        langManager = new LangManager(this);
+        langManager.loadLanguage(configManager.getLanguage());
 
         indicatorManager = new IndicatorManager(this);
 
@@ -45,6 +49,10 @@ public final class AttackIndicator extends JavaPlugin {
 
     public ConfigManager getConfigManager() {
         return configManager;
+    }
+
+    public LangManager getLangManager() {
+        return langManager;
     }
 
     public IndicatorManager getIndicatorManager() {

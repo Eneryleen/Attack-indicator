@@ -1,0 +1,6 @@
+command:
+  usage: "Usage: /attackindicator <reload>"
+  no-permission: "You don't have permission to use this command!"
+  reload-success: "AttackIndicator configuration reloaded successfully!"
+  reload-error: "Failed to reload configuration: {error}"
+  unknown-subcommand: "Unknown subcommand. Usage: /attackindicator <reload>"

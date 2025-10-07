@@ -1,6 +1,9 @@
 # Attack Indicator Configuration
 # Supports MiniMessage formatting: https://docs.advntr.dev/minimessage/format.html
 
+# Language (ru or en)
+language: en
+
 # Format of the damage indicator
 # {damage} will be replaced with the actual damage amount
 # Examples:
@@ -21,6 +24,8 @@ random-offset:
   enabled: true
   # Maximum offset on X axis (in blocks)
   x: 0.5
+  # Y offset from entity head (in blocks)
+  y: 0.5
   # Maximum offset on Z axis (in blocks)
   z: 0.5
 
