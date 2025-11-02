@@ -21,12 +21,16 @@ public class DamageListener implements Listener {
     public void onEntityDamage(EntityDamageEvent event) {
         Entity entity = event.getEntity();
 
-        if (!(entity instanceof LivingEntity) || entity instanceof Player) {
+        if (!(entity instanceof LivingEntity)) {
             return;
         }
 
         LivingEntity victim = (LivingEntity) entity;
         ConfigManager config = plugin.getConfigManager();
+
+        if (entity instanceof Player && !config.isShowOnPlayers()) {
+            return;
+        }
 
         if (config.isWorldDisabled(victim.getWorld().getName())) {
             return;

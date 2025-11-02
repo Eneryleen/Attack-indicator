@@ -16,6 +16,7 @@ public class ConfigManager {
     private String indicatorFormat;
     private int displayDuration;
     private double upwardSpeed;
+    private double verticalOffset;
     private boolean randomOffsetEnabled;
     private double randomOffsetX;
     private double yOffset;
@@ -24,6 +25,8 @@ public class ConfigManager {
     private Set<String> disabledWorlds;
     private boolean entityFilterWhitelist;
     private Set<EntityType> entityFilter;
+    private boolean showOnPlayers;
+    private float indicatorScale;
 
     public ConfigManager(AttackIndicator plugin) {
         this.plugin = plugin;
@@ -38,6 +41,7 @@ public class ConfigManager {
         indicatorFormat = config.getString("indicator-format", "<#ff5555>❤️ -{damage}");
         displayDuration = config.getInt("display-duration", 40);
         upwardSpeed = config.getDouble("upward-speed", 0.03);
+        verticalOffset = config.getDouble("vertical-offset", 0.5);
 
         randomOffsetEnabled = config.getBoolean("random-offset.enabled", true);
         randomOffsetX = config.getDouble("random-offset.x", 0.5);
@@ -53,6 +57,9 @@ public class ConfigManager {
         }
 
         disabledWorlds = new HashSet<>(config.getStringList("disabled-worlds"));
+
+        showOnPlayers = config.getBoolean("show-on-players", false);
+        indicatorScale = (float) config.getDouble("indicator-scale", 1.5);
 
         entityFilterWhitelist = config.getBoolean("entity-filter.whitelist-mode", false);
         entityFilter = new HashSet<>();
@@ -81,6 +88,10 @@ public class ConfigManager {
 
     public double getUpwardSpeed() {
         return upwardSpeed;
+    }
+
+    public double getVerticalOffset() {
+        return verticalOffset;
     }
 
     public boolean isRandomOffsetEnabled() {
@@ -129,6 +140,14 @@ public class ConfigManager {
         } else {
             return !entityFilter.contains(type);
         }
+    }
+
+    public boolean isShowOnPlayers() {
+        return showOnPlayers;
+    }
+
+    public float getIndicatorScale() {
+        return indicatorScale;
     }
 
     public enum DisplayMode {

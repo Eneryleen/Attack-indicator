@@ -3,8 +3,6 @@ version: '2.1'
 main: org.eneryleen.attackIndicator.AttackIndicator
 api-version: '1.19'
 authors: [ Eneryleen ]
-description: Animated damage indicators using Display Entities
-website: https://projectwinter.ru
 
 commands:
   attackindicator:

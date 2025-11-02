@@ -18,6 +18,10 @@ display-duration: 40
 # How fast the indicator moves upward (in blocks per tick)
 upward-speed: 0.03
 
+# Vertical offset from entity's head (in blocks)
+# Positive values move indicator higher, negative values move it lower
+vertical-offset: -0.5
+
 # Random offset settings to prevent indicators from stacking
 random-offset:
   # Enable random offset
@@ -41,8 +45,15 @@ disabled-worlds:
   - world_nether_example
   - world_the_end_example
 
+# Whether to show damage indicators on players when they take damage
+show-on-players: false
+
+# Scale of the damage indicator display
+# Default is 1.5. Higher values make indicators larger, lower values make them smaller
+indicator-scale: 1.5
+
 # Entity types filter
-# If empty, indicators will show for all entities (except players)
+# If empty, indicators will show for all entities
 # Available entity types: https://jd.papermc.io/paper/1.19/org/bukkit/entity/EntityType.html
 # Examples: ZOMBIE, SKELETON, CREEPER, ENDERMAN, etc.
 # Leave empty [] to show for all entities

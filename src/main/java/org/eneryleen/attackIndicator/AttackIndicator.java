@@ -30,6 +30,9 @@ public final class AttackIndicator extends JavaPlugin {
         int pluginId = 27487;
         new Metrics(this, pluginId);
 
+        UpdateChecker updateChecker = new UpdateChecker(this);
+        updateChecker.checkForUpdates();
+
         getLogger().info("AttackIndicator v" + getDescription().getVersion() + " enabled!");
         getLogger().info("Using Display Entities for damage indicators");
     }
