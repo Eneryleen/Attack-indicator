@@ -23,24 +23,24 @@ public class ReloadCommand implements CommandExecutor, TabCompleter {
         LangManager lang = plugin.getLangManager();
 
         if (args.length == 0) {
-            sender.sendMessage(lang.getComponent("command.usage"));
+            sender.sendMessage(lang.getFormatted("command.usage"));
             return true;
         }
 
         if (args[0].equalsIgnoreCase("reload")) {
             if (!sender.hasPermission("attackindicator.reload")) {
-                sender.sendMessage(lang.getComponent("command.no-permission"));
+                sender.sendMessage(lang.getFormatted("command.no-permission"));
                 return true;
             }
 
             try {
                 plugin.getConfigManager().loadConfig();
                 plugin.getLangManager().loadLanguage(plugin.getConfigManager().getLanguage());
-                sender.sendMessage(lang.getComponent("command.reload-success"));
+                sender.sendMessage(lang.getFormatted("command.reload-success"));
             } catch (Exception e) {
                 Map<String, String> placeholders = new HashMap<>();
                 placeholders.put("error", e.getMessage());
-                sender.sendMessage(lang.getComponent("command.reload-error", placeholders));
+                sender.sendMessage(lang.getFormatted("command.reload-error", placeholders));
                 plugin.getLogger().severe("Failed to reload configuration: " + e.getMessage());
                 e.printStackTrace();
             }
@@ -48,7 +48,7 @@ public class ReloadCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        sender.sendMessage(lang.getComponent("command.unknown-subcommand"));
+        sender.sendMessage(lang.getFormatted("command.unknown-subcommand"));
         return true;
     }
 

@@ -2,13 +2,15 @@ package org.eneryleen.attackIndicator;
 
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.eneryleen.attackIndicator.indicator.IndicatorFactory;
+import org.eneryleen.attackIndicator.indicator.IndicatorSpawner;
 
 public final class AttackIndicator extends JavaPlugin {
 
     private static AttackIndicator instance;
     private ConfigManager configManager;
     private LangManager langManager;
-    private IndicatorManager indicatorManager;
+    private IndicatorSpawner indicatorManager;
 
     @Override
     public void onEnable() {
@@ -20,7 +22,7 @@ public final class AttackIndicator extends JavaPlugin {
         langManager = new LangManager(this);
         langManager.loadLanguage(configManager.getLanguage());
 
-        indicatorManager = new IndicatorManager(this);
+        indicatorManager = IndicatorFactory.createIndicatorManager(this);
 
         getServer().getPluginManager().registerEvents(new DamageListener(this), this);
 
@@ -34,7 +36,6 @@ public final class AttackIndicator extends JavaPlugin {
         updateChecker.checkForUpdates();
 
         getLogger().info("AttackIndicator v" + getDescription().getVersion() + " enabled!");
-        getLogger().info("Using Display Entities for damage indicators");
     }
 
     @Override
@@ -58,7 +59,7 @@ public final class AttackIndicator extends JavaPlugin {
         return langManager;
     }
 
-    public IndicatorManager getIndicatorManager() {
+    public IndicatorSpawner getIndicatorManager() {
         return indicatorManager;
     }
 }

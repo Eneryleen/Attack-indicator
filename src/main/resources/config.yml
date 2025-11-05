@@ -1,72 +1,124 @@
-# Attack Indicator Configuration
-# Supports MiniMessage formatting: https://docs.advntr.dev/minimessage/format.html
+# ═══════════════════════════════════════════════════════════════════
+#                    Attack Indicator Configuration
+# ═══════════════════════════════════════════════════════════════════
+#
+# Version Compatibility:
+#   ✓ 1.19.4+       - Display Entities (smooth, best performance)
+#   ✓ 1.16.5-1.19.3 - Armor Stands with MiniMessage (hex colors, gradients)
+#   ✓ 1.8-1.16.4    - Armor Stands with Legacy ChatColor (basic colors only)
+#
+# The plugin automatically detects your server version and uses the best method.
+#
+# ═══════════════════════════════════════════════════════════════════
 
 # Language (ru or en)
 language: en
 
+# ═══════════════════════════════════════════════════════════════════
+#                         Text Formatting
+# ═══════════════════════════════════════════════════════════════════
+
 # Format of the damage indicator
 # {damage} will be replaced with the actual damage amount
-# Examples:
-#   "<#ffffff>-{damage}<#ff5555>♥" - Red heart with damage
+#
+# MiniMessage formatting (1.16.5+): https://docs.advntr.dev/minimessage/format.html
+# Examples for modern versions (1.16.5+):
+#   "<#ffffff>-{damage}<#ff5555>♥" - Hex colors with heart
 #   "<gradient:#ff0000:#ffff00>-{damage}</gradient>" - Red to yellow gradient
 #   "<bold><red>-{damage}</red></bold>" - Bold red text
+#
+# Legacy formatting (1.8-1.16.4):
+#   Use basic color codes: <red>, <gold>, <yellow>, <green>, <aqua>, <blue>
+#   Or use & codes: "&c-{damage} &4♥"
+#   Note: Hex colors and gradients will be stripped on old versions
 indicator-format: "<#ffffff>-{damage}<#ff5555>♥"
 
+# ═══════════════════════════════════════════════════════════════════
+#                      Animation Settings
+# ═══════════════════════════════════════════════════════════════════
+
 # How long the indicator stays visible (in ticks, 20 ticks = 1 second)
+# Works on all versions (1.8+)
 display-duration: 40
 
 # How fast the indicator moves upward (in blocks per tick)
+# Works on all versions (1.8+)
 upward-speed: 0.03
 
 # Vertical offset from entity's head (in blocks)
 # Positive values move indicator higher, negative values move it lower
+# Works on all versions (1.8+)
+# Note: On 1.8-1.10, entity height detection is limited (uses fixed 1.5 blocks)
 vertical-offset: -0.5
 
 # Random offset settings to prevent indicators from stacking
+# Works on all versions (1.8+)
 random-offset:
-  # Enable random offset
   enabled: true
-  # Maximum offset on X axis (in blocks)
   x: 0.5
-  # Y offset from entity head (in blocks)
-  y: 0.5
-  # Maximum offset on Z axis (in blocks)
   z: 0.5
 
+# ═══════════════════════════════════════════════════════════════════
+#                      Display Filters
+# ═══════════════════════════════════════════════════════════════════
+
 # Display mode for damage indicators
+# Works on all versions (1.8+)
 # Available modes:
-#   ALL - Show all damage (from any source)
+#   ALL         - Show all damage from any source
 #   PLAYER_ONLY - Show only damage dealt by players
-#   NO_SELF - Show all damage except self-inflicted damage
+#   NO_SELF     - Show all damage except self-inflicted
 display-mode: PLAYER_ONLY
 
 # List of worlds where indicators are disabled
+# Works on all versions (1.8+)
 disabled-worlds:
   - world_nether_example
   - world_the_end_example
 
 # Whether to show damage indicators on players when they take damage
+# Works on all versions (1.8+)
 show-on-players: false
 
+# ═══════════════════════════════════════════════════════════════════
+#                      Visual Settings
+# ═══════════════════════════════════════════════════════════════════
+
 # Scale of the damage indicator display
+# ⚠ ONLY works on 1.19.4+ (Display Entities only)
+# On older versions, this setting is ignored (Armor Stands have fixed size)
 # Default is 1.5. Higher values make indicators larger, lower values make them smaller
 indicator-scale: 1.5
 
+# ═══════════════════════════════════════════════════════════════════
+#                      Entity Filter
+# ═══════════════════════════════════════════════════════════════════
+
 # Entity types filter
+# Works on all versions (1.8+)
 # If empty, indicators will show for all entities
+#
 # Available entity types: https://jd.papermc.io/paper/1.19/org/bukkit/entity/EntityType.html
-# Examples: ZOMBIE, SKELETON, CREEPER, ENDERMAN, etc.
-# Leave empty [] to show for all entities
+# Examples: ZOMBIE, SKELETON, CREEPER, ENDERMAN, VILLAGER, etc.
 entity-filter:
-  # If true, only entities in the list below will show indicators
-  # If false, all entities except those in the list will show indicators
+  # Whitelist mode:
+  #   true  - ONLY show indicators for entities in the list below
+  #   false - Show indicators for ALL entities EXCEPT those in the list
   whitelist-mode: false
-  # List of entity types
+
+  # List of entity types to filter
+  # Leave empty [] to show for all entities
   entities: []
-  # Example whitelist (only zombies and skeletons):
+
+  # Example configurations:
+
+  # Show only for zombies and skeletons (whitelist):
+  # whitelist-mode: true
   # entities:
   #   - ZOMBIE
   #   - SKELETON
-  # Example blacklist (all except creepers):
+
+  # Show for all except creepers (blacklist):
+  # whitelist-mode: false
   # entities:
   #   - CREEPER

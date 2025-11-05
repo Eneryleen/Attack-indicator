@@ -1,11 +1,10 @@
 package org.eneryleen.attackIndicator;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.eneryleen.attackIndicator.indicator.legacy.TextFormatter;
 
 import java.io.File;
 import java.io.InputStream;
@@ -17,13 +16,11 @@ import java.util.Map;
 public class LangManager {
 
     private final AttackIndicator plugin;
-    private final MiniMessage miniMessage;
     private final Map<String, String> messages;
     private String language;
 
     public LangManager(AttackIndicator plugin) {
         this.plugin = plugin;
-        this.miniMessage = MiniMessage.miniMessage();
         this.messages = new HashMap<>();
     }
 
@@ -81,22 +78,14 @@ public class LangManager {
         return message;
     }
 
-    public Component getComponent(String key) {
+    public String getFormatted(String key) {
         String message = getMessage(key);
-        try {
-            return miniMessage.deserialize(message);
-        } catch (Exception e) {
-            return Component.text(message, NamedTextColor.WHITE);
-        }
+        return TextFormatter.format(message);
     }
 
-    public Component getComponent(String key, Map<String, String> placeholders) {
+    public String getFormatted(String key, Map<String, String> placeholders) {
         String message = getMessage(key, placeholders);
-        try {
-            return miniMessage.deserialize(message);
-        } catch (Exception e) {
-            return Component.text(message, NamedTextColor.WHITE);
-        }
+        return TextFormatter.format(message);
     }
 
     public String getLanguage() {

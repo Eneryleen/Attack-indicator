@@ -1,0 +1,28 @@
+# Build artifacts
+target/
+dependency-reduced-pom.xml
+*.jar
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.eclipse/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~
+
+# Archives
+*.zip
+*.tar.gz
+
+# Claude
+.claude/
+CLAUDE.md

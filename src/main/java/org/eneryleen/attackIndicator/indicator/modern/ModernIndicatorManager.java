@@ -1,4 +1,4 @@
-package org.eneryleen.attackIndicator;
+package org.eneryleen.attackIndicator.indicator.modern;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -8,6 +8,9 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.TextDisplay;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Transformation;
+import org.eneryleen.attackIndicator.AttackIndicator;
+import org.eneryleen.attackIndicator.ConfigManager;
+import org.eneryleen.attackIndicator.indicator.IndicatorSpawner;
 import org.joml.Vector3f;
 
 import java.text.DecimalFormat;
@@ -15,7 +18,7 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-public class IndicatorManager {
+public class ModernIndicatorManager implements IndicatorSpawner {
 
     private final AttackIndicator plugin;
     private final MiniMessage miniMessage;
@@ -23,7 +26,7 @@ public class IndicatorManager {
     private final Random random;
     private final Set<TextDisplay> activeIndicators;
 
-    public IndicatorManager(AttackIndicator plugin) {
+    public ModernIndicatorManager(AttackIndicator plugin) {
         this.plugin = plugin;
         this.miniMessage = MiniMessage.miniMessage();
         this.damageFormat = new DecimalFormat("0.#");
@@ -31,11 +34,13 @@ public class IndicatorManager {
         this.activeIndicators = new HashSet<>();
     }
 
+    @Override
     public void spawnIndicator(LivingEntity entity, double damage) {
         ConfigManager config = plugin.getConfigManager();
 
         Location location = entity.getLocation().clone();
-        location.add(0, entity.getHeight() + config.getVerticalOffset(), 0);
+        double entityHeight = entity.getHeight();
+        location.add(0, entityHeight + config.getVerticalOffset(), 0);
 
         if (config.isRandomOffsetEnabled()) {
             double offsetX = (random.nextDouble() - 0.5) * config.getRandomOffsetX();
@@ -87,6 +92,7 @@ public class IndicatorManager {
         }.runTaskTimer(plugin, 0L, 1L);
     }
 
+    @Override
     public void cleanup() {
         for (TextDisplay display : new HashSet<>(activeIndicators)) {
             if (display.isValid()) {
