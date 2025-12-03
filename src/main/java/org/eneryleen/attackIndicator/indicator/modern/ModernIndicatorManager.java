@@ -14,9 +14,9 @@ import org.eneryleen.attackIndicator.indicator.IndicatorSpawner;
 import org.joml.Vector3f;
 
 import java.text.DecimalFormat;
-import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
+import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ModernIndicatorManager implements IndicatorSpawner {
 
@@ -31,7 +31,7 @@ public class ModernIndicatorManager implements IndicatorSpawner {
         this.miniMessage = MiniMessage.miniMessage();
         this.damageFormat = new DecimalFormat("0.#");
         this.random = new Random();
-        this.activeIndicators = new HashSet<>();
+        this.activeIndicators = ConcurrentHashMap.newKeySet();
     }
 
     @Override
@@ -44,8 +44,9 @@ public class ModernIndicatorManager implements IndicatorSpawner {
 
         if (config.isRandomOffsetEnabled()) {
             double offsetX = (random.nextDouble() - 0.5) * config.getRandomOffsetX();
+            double offsetY = (random.nextDouble() - 0.5) * config.getYOffset();
             double offsetZ = (random.nextDouble() - 0.5) * config.getRandomOffsetZ();
-            location.add(offsetX, 0, offsetZ);
+            location.add(offsetX, offsetY, offsetZ);
         }
 
         String damageText = damageFormat.format(damage);
@@ -67,11 +68,11 @@ public class ModernIndicatorManager implements IndicatorSpawner {
 
             activeIndicators.add(display);
 
-            animateIndicator(display, location, config.getUpwardSpeed(), config.getDisplayDuration());
+            animateIndicator(display, config.getUpwardSpeed(), config.getDisplayDuration());
         });
     }
 
-    private void animateIndicator(TextDisplay display, Location startLocation, double speed, int duration) {
+    private void animateIndicator(TextDisplay display, double speed, int duration) {
         new BukkitRunnable() {
             int ticks = 0;
 
@@ -94,7 +95,7 @@ public class ModernIndicatorManager implements IndicatorSpawner {
 
     @Override
     public void cleanup() {
-        for (TextDisplay display : new HashSet<>(activeIndicators)) {
+        for (TextDisplay display : activeIndicators) {
             if (display.isValid()) {
                 display.remove();
             }

@@ -1,6 +1,9 @@
 command:
-  usage: "Использование: /attackindicator <reload>"
+  usage: "Использование: /attackindicator <reload|toggle>"
   no-permission: "У вас нет прав для использования этой команды!"
   reload-success: "Конфигурация AttackIndicator успешно перезагружена!"
   reload-error: "Не удалось перезагрузить конфигурацию: {error}"
-  unknown-subcommand: "Неизвестная подкоманда. Использование: /attackindicator <reload>"
+  unknown-subcommand: "Неизвестная подкоманда. Использование: /attackindicator <reload|toggle>"
+  player-only: "Эта команда доступна только игрокам!"
+  toggle-enabled: "Индикаторы урона включены!"
+  toggle-disabled: "Индикаторы урона отключены!"

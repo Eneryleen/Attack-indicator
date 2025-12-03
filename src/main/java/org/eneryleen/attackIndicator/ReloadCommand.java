@@ -4,6 +4,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,6 +49,29 @@ public class ReloadCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        if (args[0].equalsIgnoreCase("toggle")) {
+            if (!(sender instanceof Player)) {
+                sender.sendMessage(lang.getFormatted("command.player-only"));
+                return true;
+            }
+
+            Player player = (Player) sender;
+
+            if (!player.hasPermission("attackindicator.toggle")) {
+                sender.sendMessage(lang.getFormatted("command.no-permission"));
+                return true;
+            }
+
+            boolean enabled = plugin.getToggleManager().toggle(player.getUniqueId());
+            if (enabled) {
+                sender.sendMessage(lang.getFormatted("command.toggle-enabled"));
+            } else {
+                sender.sendMessage(lang.getFormatted("command.toggle-disabled"));
+            }
+
+            return true;
+        }
+
         sender.sendMessage(lang.getFormatted("command.unknown-subcommand"));
         return true;
     }
@@ -57,8 +81,12 @@ public class ReloadCommand implements CommandExecutor, TabCompleter {
         List<String> completions = new ArrayList<>();
 
         if (args.length == 1) {
-            if (sender.hasPermission("attackindicator.reload")) {
+            String input = args[0].toLowerCase();
+            if (sender.hasPermission("attackindicator.reload") && "reload".startsWith(input)) {
                 completions.add("reload");
+            }
+            if (sender.hasPermission("attackindicator.toggle") && "toggle".startsWith(input)) {
+                completions.add("toggle");
             }
         }
 

@@ -41,6 +41,7 @@ public class DamageListener implements Listener {
         }
 
         ConfigManager.DisplayMode mode = config.getDisplayMode();
+        Player attacker = null;
 
         switch (mode) {
             case PLAYER_ONLY:
@@ -52,20 +53,35 @@ public class DamageListener implements Listener {
                 if (!(damager instanceof Player)) {
                     return;
                 }
+                attacker = (Player) damager;
                 break;
 
             case NO_SELF:
                 if (event instanceof EntityDamageByEntityEvent) {
                     EntityDamageByEntityEvent selfDamageEvent = (EntityDamageByEntityEvent) event;
                     Entity actualDamager = getDamager(selfDamageEvent.getDamager());
-                    if (actualDamager.equals(victim)) {
+                    if (actualDamager != null && actualDamager.equals(victim)) {
                         return;
+                    }
+                    if (actualDamager instanceof Player) {
+                        attacker = (Player) actualDamager;
                     }
                 }
                 break;
 
             case ALL:
+                if (event instanceof EntityDamageByEntityEvent) {
+                    EntityDamageByEntityEvent allDamageEvent = (EntityDamageByEntityEvent) event;
+                    Entity allDamager = getDamager(allDamageEvent.getDamager());
+                    if (allDamager instanceof Player) {
+                        attacker = (Player) allDamager;
+                    }
+                }
                 break;
+        }
+
+        if (attacker != null && !plugin.getToggleManager().isEnabled(attacker.getUniqueId())) {
+            return;
         }
 
         double damage = event.getFinalDamage();
@@ -82,6 +98,7 @@ public class DamageListener implements Listener {
             if (projectile.getShooter() instanceof Entity) {
                 return (Entity) projectile.getShooter();
             }
+            return null;
         }
         return damager;
     }

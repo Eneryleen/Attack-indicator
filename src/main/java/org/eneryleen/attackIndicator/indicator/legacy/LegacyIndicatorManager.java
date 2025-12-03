@@ -9,9 +9,9 @@ import org.eneryleen.attackIndicator.ConfigManager;
 import org.eneryleen.attackIndicator.indicator.IndicatorSpawner;
 
 import java.text.DecimalFormat;
-import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
+import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class LegacyIndicatorManager implements IndicatorSpawner {
 
@@ -24,7 +24,7 @@ public class LegacyIndicatorManager implements IndicatorSpawner {
         this.plugin = plugin;
         this.damageFormat = new DecimalFormat("0.#");
         this.random = new Random();
-        this.activeIndicators = new HashSet<>();
+        this.activeIndicators = ConcurrentHashMap.newKeySet();
     }
 
     @Override
@@ -37,8 +37,9 @@ public class LegacyIndicatorManager implements IndicatorSpawner {
 
         if (config.isRandomOffsetEnabled()) {
             double offsetX = (random.nextDouble() - 0.5) * config.getRandomOffsetX();
+            double offsetY = (random.nextDouble() - 0.5) * config.getYOffset();
             double offsetZ = (random.nextDouble() - 0.5) * config.getRandomOffsetZ();
-            location.add(offsetX, 0, offsetZ);
+            location.add(offsetX, offsetY, offsetZ);
         }
 
         String damageText = damageFormat.format(damage);
@@ -64,13 +65,28 @@ public class LegacyIndicatorManager implements IndicatorSpawner {
             } catch (NoSuchMethodError ignored) {
             }
 
+            try {
+                armorStand.setSmall(true);
+            } catch (NoSuchMethodError ignored) {
+            }
+
+            try {
+                armorStand.setBasePlate(false);
+            } catch (NoSuchMethodError ignored) {
+            }
+
+            try {
+                armorStand.setArms(false);
+            } catch (NoSuchMethodError ignored) {
+            }
+
             activeIndicators.add(armorStand);
 
-            animateIndicator(armorStand, location, config.getUpwardSpeed(), config.getDisplayDuration());
+            animateIndicator(armorStand, config.getUpwardSpeed(), config.getDisplayDuration());
         });
     }
 
-    private void animateIndicator(ArmorStand armorStand, Location startLocation, double speed, int duration) {
+    private void animateIndicator(ArmorStand armorStand, double speed, int duration) {
         new BukkitRunnable() {
             int ticks = 0;
 
@@ -101,7 +117,7 @@ public class LegacyIndicatorManager implements IndicatorSpawner {
 
     @Override
     public void cleanup() {
-        for (ArmorStand armorStand : new HashSet<>(activeIndicators)) {
+        for (ArmorStand armorStand : activeIndicators) {
             if (armorStand.isValid()) {
                 armorStand.remove();
             }

@@ -1,6 +1,9 @@
 command:
-  usage: "Usage: /attackindicator <reload>"
+  usage: "Usage: /attackindicator <reload|toggle>"
   no-permission: "You don't have permission to use this command!"
   reload-success: "AttackIndicator configuration reloaded successfully!"
   reload-error: "Failed to reload configuration: {error}"
-  unknown-subcommand: "Unknown subcommand. Usage: /attackindicator <reload>"
+  unknown-subcommand: "Unknown subcommand. Usage: /attackindicator <reload|toggle>"
+  player-only: "This command can only be used by players!"
+  toggle-enabled: "Damage indicators enabled!"
+  toggle-disabled: "Damage indicators disabled!"

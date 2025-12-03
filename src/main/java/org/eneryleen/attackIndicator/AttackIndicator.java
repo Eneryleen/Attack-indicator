@@ -11,6 +11,7 @@ public final class AttackIndicator extends JavaPlugin {
     private ConfigManager configManager;
     private LangManager langManager;
     private IndicatorSpawner indicatorManager;
+    private PlayerToggleManager toggleManager;
 
     @Override
     public void onEnable() {
@@ -22,12 +23,15 @@ public final class AttackIndicator extends JavaPlugin {
         langManager = new LangManager(this);
         langManager.loadLanguage(configManager.getLanguage());
 
+        toggleManager = new PlayerToggleManager(this);
+
         indicatorManager = IndicatorFactory.createIndicatorManager(this);
 
         getServer().getPluginManager().registerEvents(new DamageListener(this), this);
 
         ReloadCommand reloadCommand = new ReloadCommand(this);
         getCommand("attackindicator").setExecutor(reloadCommand);
+        getCommand("attackindicator").setTabCompleter(reloadCommand);
 
         int pluginId = 27487;
         new Metrics(this, pluginId);
@@ -61,5 +65,9 @@ public final class AttackIndicator extends JavaPlugin {
 
     public IndicatorSpawner getIndicatorManager() {
         return indicatorManager;
+    }
+
+    public PlayerToggleManager getToggleManager() {
+        return toggleManager;
     }
 }

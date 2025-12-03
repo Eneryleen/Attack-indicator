@@ -1,5 +1,5 @@
 name: AttackIndicator
-version: '2.2'
+version: '2.3'
 main: org.eneryleen.attackIndicator.AttackIndicator
 api-version: '1.13'
 authors: [ Eneryleen ]
@@ -7,10 +7,13 @@ authors: [ Eneryleen ]
 commands:
   attackindicator:
     description: AttackIndicator main command
-    usage: /attackindicator <reload>
+    usage: /attackindicator <reload|toggle>
     aliases: [ ai ]
 
 permissions:
   attackindicator.reload:
     description: Allows reloading the plugin configuration
     default: op
+  attackindicator.toggle:
+    description: Allows toggling damage indicators on/off for yourself
+    default: true

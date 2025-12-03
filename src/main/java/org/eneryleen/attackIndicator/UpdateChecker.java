@@ -29,10 +29,12 @@ public class UpdateChecker {
 
     public void checkForUpdates() {
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+            HttpURLConnection connection = null;
+            BufferedReader reader = null;
             try {
                 String apiUrl = String.format(MODRINTH_API_URL, PROJECT_ID);
                 URL url = new URL(apiUrl);
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
                 connection.setRequestProperty("User-Agent", USER_AGENT);
                 connection.setConnectTimeout(5000);
@@ -44,13 +46,12 @@ public class UpdateChecker {
                     return;
                 }
 
-                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 StringBuilder response = new StringBuilder();
                 String line;
                 while ((line = reader.readLine()) != null) {
                     response.append(line);
                 }
-                reader.close();
 
                 JsonArray versions = JsonParser.parseString(response.toString()).getAsJsonArray();
                 if (versions.size() == 0) {
@@ -77,6 +78,16 @@ public class UpdateChecker {
 
             } catch (Exception e) {
                 logger.warning("Failed to check for updates: " + e.getMessage());
+            } finally {
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (Exception ignored) {
+                    }
+                }
+                if (connection != null) {
+                    connection.disconnect();
+                }
             }
         });
     }
